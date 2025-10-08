@@ -27,6 +27,8 @@ def main():
     with app.app_context():
         try:
             db.create_all()
+            print("✅ Database tables created")
+            
             # Check if admin user exists, if not create it
             admin_user = User.query.filter_by(username='admin').first()
             if not admin_user:
@@ -41,7 +43,8 @@ def main():
             else:
                 print("✅ Admin user already exists")
         except Exception as e:
-            print(f"⚠️ Database initialization warning: {e}")
+            print(f"❌ Database initialization error: {e}")
+            # Don't fail the startup, just log the error
     
     # Get port from environment (for Railway/Render)
     port = int(os.environ.get('PORT', 5000))
