@@ -2,6 +2,7 @@ services:
   - type: web
     name: my-resume-cv
     env: python
+    rootDir: .
     buildCommand: pip install -r requirements.txt
     startCommand: python deploy.py
     envVars:
