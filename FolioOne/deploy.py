@@ -12,7 +12,11 @@ def main():
     if not os.environ.get('SECRET_KEY'):
         os.environ['SECRET_KEY'] = 'my-super-secret-key-12345-abdiwahab-resume-website-2025'
     
-    # Don't set DATABASE_URL - let the app use its default SQLite configuration
+    # Debug: Print DATABASE_URL if it exists
+    if os.environ.get('DATABASE_URL'):
+        print(f"🔍 DATABASE_URL found: {os.environ.get('DATABASE_URL')}")
+    else:
+        print("🔍 No DATABASE_URL found, using default SQLite configuration")
     
     # Import and run the app
     from app import app

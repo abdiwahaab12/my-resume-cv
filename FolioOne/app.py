@@ -12,10 +12,14 @@ app = Flask(__name__)
 
 # Use production config if DATABASE_URL is set (for Railway/Render)
 if os.environ.get('DATABASE_URL'):
+    print(f"🔍 Using ProductionConfig with DATABASE_URL: {os.environ.get('DATABASE_URL')}")
     from config_production import ProductionConfig
     app.config.from_object(ProductionConfig)
 else:
+    print("🔍 Using default Config (no DATABASE_URL found)")
     app.config.from_object(Config)
+
+print(f"🔍 Final SQLALCHEMY_DATABASE_URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
 
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
