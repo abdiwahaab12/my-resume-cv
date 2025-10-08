@@ -20,31 +20,7 @@ def main():
     print("🔍 Using SQLite database configuration")
     
     # Import and run the app
-    from app import app, db, User
-    from werkzeug.security import generate_password_hash
-    
-    # Initialize database and create admin user if needed
-    with app.app_context():
-        try:
-            db.create_all()
-            print("✅ Database tables created")
-            
-            # Check if admin user exists, if not create it
-            admin_user = User.query.filter_by(username='admin').first()
-            if not admin_user:
-                admin_user = User(
-                    username='admin',
-                    email='admin@example.com',
-                    password_hash=generate_password_hash('admin123')
-                )
-                db.session.add(admin_user)
-                db.session.commit()
-                print("✅ Admin user created successfully")
-            else:
-                print("✅ Admin user already exists")
-        except Exception as e:
-            print(f"❌ Database initialization error: {e}")
-            # Don't fail the startup, just log the error
+    from app import app
     
     # Get port from environment (for Railway/Render)
     port = int(os.environ.get('PORT', 5000))
