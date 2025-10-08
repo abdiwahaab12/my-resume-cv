@@ -19,7 +19,7 @@
 ### Step 3: Configure Environment Variables
 In Railway dashboard, add these environment variables:
 - `SECRET_KEY`: Generate a random secret key
-- `DATABASE_URL`: Railway will provide this automatically
+- `DATABASE_URL`: Use MySQL connection string (Railway will provide this automatically if you add MySQL service)
 
 ### Step 4: Access Your Website
 - Railway will give you a URL like: `https://your-project.railway.app`
@@ -47,7 +47,7 @@ In Railway dashboard, add these environment variables:
 ### Step 3: Configure Environment Variables
 Add these in Render dashboard:
 - `SECRET_KEY`: Generate a random secret key
-- `DATABASE_URL`: Use Render's free PostgreSQL
+- `DATABASE_URL`: Use MySQL connection string (Render provides free PostgreSQL, but we'll use MySQL)
 
 ### Step 4: Access Your Website
 - Render will give you a URL like: `https://your-project.onrender.com`
