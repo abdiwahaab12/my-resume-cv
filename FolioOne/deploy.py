@@ -12,8 +12,7 @@ def main():
     if not os.environ.get('SECRET_KEY'):
         os.environ['SECRET_KEY'] = 'my-super-secret-key-12345-abdiwahab-resume-website-2025'
     
-    if not os.environ.get('DATABASE_URL'):
-        os.environ['DATABASE_URL'] = 'sqlite:///resume_db.db'
+    # Don't set DATABASE_URL - let the app use its default SQLite configuration
     
     # Import and run the app
     from app import app
