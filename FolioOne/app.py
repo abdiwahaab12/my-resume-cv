@@ -9,17 +9,7 @@ import json
 from config import Config
 
 app = Flask(__name__)
-
-# Use production config if DATABASE_URL is set (for Railway/Render)
-if os.environ.get('DATABASE_URL'):
-    print(f"🔍 Using ProductionConfig with DATABASE_URL: {os.environ.get('DATABASE_URL')}")
-    from config_production import ProductionConfig
-    app.config.from_object(ProductionConfig)
-else:
-    print("🔍 Using default Config (no DATABASE_URL found)")
-    app.config.from_object(Config)
-
-print(f"🔍 Final SQLALCHEMY_DATABASE_URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
+app.config.from_object(Config)
 
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -184,6 +174,7 @@ def admin_dashboard():
     skills_count = Skill.query.count()
     experiences_count = Experience.query.count()
     contacts_count = Message.query.count()
+    unread_contacts = Message.query.filter_by(read=False).count()
     
     recent_projects = Project.query.order_by(Project.created_at.desc()).limit(5).all()
     recent_contacts = Message.query.order_by(Message.created_at.desc()).limit(5).all()
@@ -193,6 +184,7 @@ def admin_dashboard():
                          skills_count=skills_count,
                          experiences_count=experiences_count,
                          contacts_count=contacts_count,
+                         unread_contacts=unread_contacts,
                          recent_projects=recent_projects,
                          recent_contacts=recent_contacts)
 
@@ -429,82 +421,6 @@ def api_clear_all_messages():
     
     return jsonify({'message': 'All messages cleared successfully'})
 
-# Skills API Routes
-@app.route('/api/skills', methods=['GET'])
-def api_skills():
-    skills = Skill.query.order_by(Skill.category, Skill.name).all()
-    return jsonify([{
-        'id': skill.id,
-        'name': skill.name,
-        'category': skill.category,
-        'proficiency': skill.proficiency,
-        'description': skill.description
-    } for skill in skills])
-
-@app.route('/api/skills', methods=['POST'])
-def api_create_skill():
-    if 'admin_logged_in' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    name = request.form.get('name')
-    category = request.form.get('category')
-    proficiency = int(request.form.get('proficiency'))
-    description = request.form.get('description')
-    
-    skill = Skill(
-        name=name,
-        category=category,
-        proficiency=proficiency,
-        description=description
-    )
-    
-    db.session.add(skill)
-    db.session.commit()
-    
-    return jsonify({'message': 'Skill created successfully', 'id': skill.id})
-
-@app.route('/api/skills/<int:skill_id>', methods=['GET'])
-def api_get_skill(skill_id):
-    skill = Skill.query.get_or_404(skill_id)
-    return jsonify({
-        'id': skill.id,
-        'name': skill.name,
-        'category': skill.category,
-        'proficiency': skill.proficiency,
-        'description': skill.description
-    })
-
-@app.route('/api/skills/<int:skill_id>', methods=['PUT'])
-def api_update_skill(skill_id):
-    if 'admin_logged_in' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    skill = Skill.query.get_or_404(skill_id)
-    
-    # Check if this is an update (has ID in form data)
-    if request.form.get('id'):
-        skill.name = request.form.get('name')
-        skill.category = request.form.get('category')
-        skill.proficiency = int(request.form.get('proficiency'))
-        skill.description = request.form.get('description')
-        
-        db.session.commit()
-        return jsonify({'message': 'Skill updated successfully'})
-    else:
-        # This is a create request, redirect to POST
-        return api_create_skill()
-
-@app.route('/api/skills/<int:skill_id>', methods=['DELETE'])
-def api_delete_skill(skill_id):
-    if 'admin_logged_in' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    skill = Skill.query.get_or_404(skill_id)
-    db.session.delete(skill)
-    db.session.commit()
-    
-    return jsonify({'message': 'Skill deleted successfully'})
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
@@ -521,6 +437,4 @@ if __name__ == '__main__':
             db.session.commit()
             print("Admin user created: username='admin', password='admin123'")
     
-    # Get port from environment variable (for Railway/Render)
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(debug=True)
