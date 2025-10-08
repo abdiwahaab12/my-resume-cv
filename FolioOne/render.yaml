@@ -2,10 +2,10 @@ services:
   - type: web
     name: my-resume-cv
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python deploy.py
+    buildCommand: pip install -r FolioOne/requirements.txt
+    startCommand: cd FolioOne && python deploy.py
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: mysql+pymysql://root:password@localhost/resume_db
+        value: postgresql://resume_user:password@localhost/resume_db
