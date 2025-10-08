@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - Portfolio{% endblock %}
+{% block body_class %}portfolio-page{% endblock %}
+
+{% block content %}
+<!-- Portfolio Section -->
+<section id="portfolio" class="portfolio section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Portfolio</h2>
+    <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+      <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
+        <li data-filter="*" class="filter-active">All</li>
+        {% for category in categories %}
+        <li data-filter=".filter-{{ category.lower().replace(' ', '-') }}">{{ category }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
+        {% for project in projects %}
+        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ project.category.lower().replace(' ', '-') }}">
+          <div class="portfolio-card">
+            <div class="portfolio-img">
+              <img src="{% if project.image_url %}{{ url_for('static', filename='uploads/' + project.image_url) }}{% else %}{{ url_for('static', filename='assets/img/portfolio/portfolio-' + loop.index|string + '.webp') }}{% endif %}" alt="{{ project.title }}" class="img-fluid">
+              <div class="portfolio-overlay">
+                <a href="{% if project.image_url %}{{ url_for('static', filename='uploads/' + project.image_url) }}{% else %}{{ url_for('static', filename='assets/img/portfolio/portfolio-' + loop.index|string + '.webp') }}{% endif %}" class="glightbox portfolio-lightbox"><i class="bi bi-plus"></i></a>
+                <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="portfolio-details-link"><i class="bi bi-link"></i></a>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <h4>{{ project.title }}</h4>
+              <p>{{ project.description[:100] }}{% if project.description|length > 100 %}...{% endif %}</p>
+              <div class="portfolio-tags">
+                <span>{{ project.category }}</span>
+                {% if project.technologies %}
+                  {% for tech in project.technologies[:2] %}
+                  <span>{{ tech }}</span>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
+      <a href="{{ url_for('contact') }}" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
