@@ -24,6 +24,13 @@ def migrate_database():
                 # Create all tables
                 db.create_all()
                 print("✅ Database and tables created successfully!")
+                
+                # Only create admin user and sample data if this is a completely new database
+                print("🔧 Setting up initial data...")
+                from database_setup import create_admin_user, create_sample_data
+                create_admin_user()
+                create_sample_data()
+                print("✅ Initial data setup completed!")
                 return True
             
             print(f"📁 Database found at: {db_path}")

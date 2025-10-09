@@ -64,7 +64,16 @@
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
         <div class="project-card">
           <div class="project-img">
-            <img src="{% if project.image_url %}{{ url_for('static', filename='uploads/' + project.image_url) }}{% else %}{{ url_for('static', filename='assets/img/portfolio/portfolio-' + loop.index|string + '.webp') }}{% endif %}" alt="{{ project.title }}" class="img-fluid">
+            {% if project.image_url %}
+            <img src="{{ url_for('static', filename='uploads/' + project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
+            {% else %}
+            <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+              <div class="text-center text-muted">
+                <i class="bi bi-image fs-1"></i>
+                <p class="mt-2">No Image</p>
+              </div>
+            </div>
+            {% endif %}
             <div class="project-overlay">
               <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="project-details-link">
                 <i class="bi bi-link"></i>

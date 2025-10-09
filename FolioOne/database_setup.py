@@ -62,59 +62,7 @@ def create_sample_data():
                 skill = Skill(**skill_data)
                 db.session.add(skill)
         
-        # Sample Projects
-        projects_data = [
-            {
-                'title': 'E-Commerce Platform',
-                'description': 'A full-stack e-commerce platform built with React and Node.js, featuring user authentication, payment processing, and admin dashboard.',
-                'long_description': 'This comprehensive e-commerce solution includes a modern React frontend with responsive design, secure user authentication, shopping cart functionality, and integrated payment processing. The admin dashboard allows for inventory management, order tracking, and customer analytics.',
-                'category': 'Web Development',
-                'image_url': '',
-                'project_url': 'https://example-ecommerce.com',
-                'github_url': 'https://github.com/username/ecommerce-platform',
-                'technologies': json.dumps(['React', 'Node.js', 'MongoDB', 'Stripe', 'JWT']),
-                'featured': True
-            },
-            {
-                'title': 'Task Management App',
-                'description': 'A collaborative task management application with real-time updates, team collaboration features, and project tracking.',
-                'long_description': 'Built with modern web technologies, this app provides teams with powerful project management tools including task assignment, deadline tracking, file sharing, and real-time collaboration features.',
-                'category': 'Web Development',
-                'image_url': '',
-                'project_url': 'https://example-tasks.com',
-                'github_url': 'https://github.com/username/task-manager',
-                'technologies': json.dumps(['Vue.js', 'Express.js', 'Socket.io', 'PostgreSQL']),
-                'featured': True
-            },
-            {
-                'title': 'Weather Dashboard',
-                'description': 'A responsive weather dashboard that displays current conditions and forecasts for multiple locations.',
-                'long_description': 'This weather application provides detailed weather information with beautiful visualizations, location-based forecasts, and historical weather data. Features include interactive maps and customizable widgets.',
-                'category': 'Web Development',
-                'image_url': '',
-                'project_url': 'https://example-weather.com',
-                'github_url': 'https://github.com/username/weather-dashboard',
-                'technologies': json.dumps(['JavaScript', 'Chart.js', 'OpenWeather API', 'CSS3']),
-                'featured': False
-            },
-            {
-                'title': 'Mobile Banking App',
-                'description': 'A secure mobile banking application with biometric authentication and real-time transaction monitoring.',
-                'long_description': 'This mobile banking solution provides users with secure access to their accounts, transaction history, bill payments, and financial planning tools. Features include fingerprint authentication and real-time notifications.',
-                'category': 'Mobile App',
-                'image_url': '',
-                'project_url': 'https://example-bank.com',
-                'github_url': 'https://github.com/username/banking-app',
-                'technologies': json.dumps(['React Native', 'Firebase', 'Biometric Auth', 'REST API']),
-                'featured': True
-            }
-        ]
-        
-        for project_data in projects_data:
-            existing_project = Project.query.filter_by(title=project_data['title']).first()
-            if not existing_project:
-                project = Project(**project_data)
-                db.session.add(project)
+        # No default projects - users will add their own projects via admin panel
         
         # Sample Experience
         experiences_data = [

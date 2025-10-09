@@ -12,12 +12,14 @@ def main():
     if not os.environ.get('SECRET_KEY'):
         os.environ['SECRET_KEY'] = 'my-super-secret-key-12345-abdiwahab-resume-website-2025'
     
-    # Force unset DATABASE_URL to use SQLite
-    if 'DATABASE_URL' in os.environ:
-        print(f"🔍 Removing invalid DATABASE_URL: {os.environ.get('DATABASE_URL')}")
-        del os.environ['DATABASE_URL']
-    
-    print("🔍 Using SQLite database configuration")
+    # Use persistent database path for production
+    if not os.environ.get('DATABASE_URL'):
+        # Use a persistent path for production deployments
+        persistent_db_path = '/opt/render/project/src/instance/resume_db.db'
+        os.environ['DATABASE_URL'] = f'sqlite:///{persistent_db_path}'
+        print(f"🔍 Using persistent SQLite database: {persistent_db_path}")
+    else:
+        print(f"🔍 Using provided DATABASE_URL: {os.environ.get('DATABASE_URL')}")
     
     # Run database migration
     print("🔄 Running database migration...")
