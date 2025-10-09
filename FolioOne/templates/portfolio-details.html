@@ -36,14 +36,24 @@
               </script>
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                  <img src="{% if project.image_url %}{{ url_for('static', filename='uploads/' + project.image_url) }}{% else %}{{ url_for('static', filename='assets/img/portfolio/portfolio-5.webp') }}{% endif %}" alt="{{ project.title }}" class="img-fluid">
+                  {% if project.image_url %}
+                  <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
+                  {% else %}
+                  <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light" style="height: 300px;">
+                    <div class="text-center text-muted">
+                      <i class="bi bi-image fs-1"></i>
+                      <p class="mt-2">No Image</p>
+                    </div>
+                  </div>
+                  {% endif %}
                 </div>
-                <div class="swiper-slide">
-                  <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-7.webp') }}" alt="{{ project.title }}" class="img-fluid">
-                </div>
-                <div class="swiper-slide">
-                  <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-8.webp') }}" alt="{{ project.title }}" class="img-fluid">
-                </div>
+                {% if project.gallery_images_list %}
+                  {% for image in project.gallery_images_list %}
+                  <div class="swiper-slide">
+                    <img src="{{ url_for('uploaded_file', filename=image) }}" alt="{{ project.title }}" class="img-fluid">
+                  </div>
+                  {% endfor %}
+                {% endif %}
               </div>
               <div class="swiper-button-prev"></div>
               <div class="swiper-button-next"></div>
@@ -53,16 +63,18 @@
           <div class="thumbnail-grid" data-aos="fade-up" data-aos-delay="200">
             <div class="row g-2 mt-3">
               <div class="col-3">
-                <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-4.webp') }}" alt="Gallery Image" class="img-fluid glightbox">
-              </div>
-              <div class="col-3">
-                <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-6.webp') }}" alt="Gallery Image" class="img-fluid glightbox">
-              </div>
-              <div class="col-3">
-                <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-11.webp') }}" alt="Gallery Image" class="img-fluid glightbox">
-              </div>
-              <div class="col-3">
-                <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-12.webp') }}" alt="Gallery Image" class="img-fluid glightbox">
+                {% if project.gallery_images_list %}
+                  {% for image in project.gallery_images_list %}
+                  <div class="col-3">
+                    <img src="{{ url_for('uploaded_file', filename=image) }}" alt="Gallery Image" class="img-fluid glightbox">
+                  </div>
+                  {% endfor %}
+                {% else %}
+                  <div class="col-12 text-center text-muted">
+                    <i class="bi bi-image fs-1"></i>
+                    <p class="mt-2">No gallery images available</p>
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>
