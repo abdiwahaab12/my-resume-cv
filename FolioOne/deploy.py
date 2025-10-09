@@ -19,6 +19,19 @@ def main():
     
     print("🔍 Using SQLite database configuration")
     
+    # Run database migration
+    print("🔄 Running database migration...")
+    try:
+        from migrate_database import migrate_database
+        if migrate_database():
+            print("✅ Database migration completed successfully!")
+        else:
+            print("❌ Database migration failed!")
+            sys.exit(1)
+    except Exception as e:
+        print(f"❌ Migration error: {e}")
+        sys.exit(1)
+    
     # Import and run the app
     from app import app
     
