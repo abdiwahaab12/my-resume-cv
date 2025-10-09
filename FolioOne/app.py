@@ -287,29 +287,6 @@ def api_update_project(project_id):
     project = Project.query.get_or_404(project_id)
     data = request.get_json()
     
-    project.title = data['title']
-    project.description = data['description']
-    project.long_description = data.get('long_description', '')
-    project.category = data['category']
-    project.image_url = data.get('image_url', '')
-    project.project_url = data.get('project_url', '')
-    project.github_url = data.get('github_url', '')
-    project.technologies = json.dumps(data.get('technologies', []))
-    project.featured = data.get('featured', False)
-    project.updated_at = datetime.utcnow()
-    
-    db.session.commit()
-    
-    return jsonify({'message': 'Project updated successfully'})
-
-@app.route('/api/projects/<int:project_id>', methods=['PUT'])
-def api_update_project(project_id):
-    if 'admin_logged_in' not in session:
-        return jsonify({'error': 'Unauthorized'}), 401
-    
-    project = Project.query.get_or_404(project_id)
-    data = request.get_json()
-    
     # Update project fields
     project.title = data.get('title', project.title)
     project.description = data.get('description', project.description)
@@ -341,6 +318,63 @@ def api_delete_project(project_id):
     db.session.commit()
     
     return jsonify({'message': 'Project deleted successfully'})
+
+# Skills API endpoints
+@app.route('/api/skills', methods=['GET'])
+def api_skills():
+    skills = Skill.query.all()
+    return jsonify([{
+        'id': s.id,
+        'name': s.name,
+        'category': s.category,
+        'proficiency': s.proficiency,
+        'description': s.description,
+        'created_at': s.created_at.isoformat() if s.created_at else None
+    } for s in skills])
+
+@app.route('/api/skills', methods=['POST'])
+def api_create_skill():
+    if 'admin_logged_in' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    data = request.get_json()
+    skill = Skill(
+        name=data['name'],
+        category=data['category'],
+        proficiency=data['proficiency'],
+        description=data.get('description', '')
+    )
+    db.session.add(skill)
+    db.session.commit()
+    
+    return jsonify({'message': 'Skill created successfully', 'id': skill.id})
+
+@app.route('/api/skills/<int:skill_id>', methods=['PUT'])
+def api_update_skill(skill_id):
+    if 'admin_logged_in' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    skill = Skill.query.get_or_404(skill_id)
+    data = request.get_json()
+    
+    skill.name = data.get('name', skill.name)
+    skill.category = data.get('category', skill.category)
+    skill.proficiency = data.get('proficiency', skill.proficiency)
+    skill.description = data.get('description', skill.description)
+    
+    db.session.commit()
+    return jsonify({'message': 'Skill updated successfully'})
+
+@app.route('/api/skills/<int:skill_id>', methods=['DELETE'])
+def api_delete_skill(skill_id):
+    if 'admin_logged_in' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    skill = Skill.query.get_or_404(skill_id)
+    db.session.delete(skill)
+    db.session.commit()
+    
+    return jsonify({'message': 'Skill deleted successfully'})
 
 @app.route('/api/upload', methods=['POST'])
 def api_upload_file():
