@@ -496,12 +496,15 @@
             
             // Add gallery images
             if (project.gallery_images && project.gallery_images.length > 0) {
+              console.log('Gallery images found:', project.gallery_images);
               project.gallery_images.forEach(imageUrl => {
                 const slide = document.createElement('div');
                 slide.className = 'swiper-slide';
-                slide.innerHTML = `<img src="/uploads/${imageUrl}" alt="${project.title}">`;
+                slide.innerHTML = `<img src="/uploads/${imageUrl}" alt="${project.title}" onerror="console.error('Failed to load image:', this.src)">`;
                 sliderWrapper.appendChild(slide);
               });
+            } else {
+              console.log('No gallery images found for project:', project.title);
             }
             
             // If no images, show placeholder
