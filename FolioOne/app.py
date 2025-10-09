@@ -302,6 +302,35 @@ def api_update_project(project_id):
     
     return jsonify({'message': 'Project updated successfully'})
 
+@app.route('/api/projects/<int:project_id>', methods=['PUT'])
+def api_update_project(project_id):
+    if 'admin_logged_in' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    project = Project.query.get_or_404(project_id)
+    data = request.get_json()
+    
+    # Update project fields
+    project.title = data.get('title', project.title)
+    project.description = data.get('description', project.description)
+    project.long_description = data.get('long_description', project.long_description)
+    project.category = data.get('category', project.category)
+    project.image_url = data.get('image_url', project.image_url)
+    project.project_url = data.get('project_url', project.project_url)
+    project.github_url = data.get('github_url', project.github_url)
+    project.featured = data.get('featured', project.featured)
+    
+    # Handle technologies
+    if 'technologies' in data:
+        project.technologies = data['technologies']
+    
+    # Handle gallery images
+    if 'gallery_images' in data:
+        project.gallery_images_list = data['gallery_images']
+    
+    db.session.commit()
+    return jsonify({'message': 'Project updated successfully'})
+
 @app.route('/api/projects/<int:project_id>', methods=['DELETE'])
 def api_delete_project(project_id):
     if 'admin_logged_in' not in session:

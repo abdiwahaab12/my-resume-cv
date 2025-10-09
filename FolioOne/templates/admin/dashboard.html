@@ -324,11 +324,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Project</h5>
+                    <h5 class="modal-title" id="projectModalTitle">Add New Project</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="projectForm">
+                        <input type="hidden" name="project_id" id="projectId">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Title</label>
@@ -339,6 +340,11 @@
                                 <select class="form-select" name="category" required>
                                     <option value="">Select Category</option>
                                     <option value="Web Development">Web Development</option>
+                                    <option value="Graphic Designer">Graphic Designer</option>
+                                    <option value="Computer Repairing">Computer Repairing</option>
+                                    <option value="Mobile Repairing">Mobile Repairing</option>
+                                    <option value="Software Solutions">Software Solutions</option>
+                                    <option value="Video Editing">Video Editing</option>
                                     <option value="Mobile App">Mobile App</option>
                                     <option value="UI/UX Design">UI/UX Design</option>
                                     <option value="Data Science">Data Science</option>
@@ -526,8 +532,12 @@
         document.getElementById('projectModal').addEventListener('hidden.bs.modal', function() {
             const form = document.getElementById('projectForm');
             form.reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
             document.getElementById('imagePreview').style.display = 'none';
             document.getElementById('imageUrl').value = '';
+            document.getElementById('galleryPreview').style.display = 'none';
+            document.getElementById('galleryImagesContainer').innerHTML = '';
         });
         
         // Load messages when contacts tab is clicked
@@ -685,6 +695,60 @@
             }
         }
         
+        function editProject(id) {
+            fetch('/api/projects')
+                .then(response => response.json())
+                .then(projects => {
+                    const project = projects.find(p => p.id === id);
+                    if (project) {
+                        // Update modal title
+                        document.getElementById('projectModalTitle').textContent = 'Edit Project';
+                        
+                        // Fill form with project data
+                        document.getElementById('projectId').value = project.id;
+                        document.querySelector('input[name="title"]').value = project.title;
+                        document.querySelector('select[name="category"]').value = project.category;
+                        document.querySelector('textarea[name="description"]').value = project.description;
+                        document.querySelector('textarea[name="long_description"]').value = project.long_description || '';
+                        document.querySelector('input[name="project_url"]').value = project.project_url || '';
+                        document.querySelector('input[name="github_url"]').value = project.github_url || '';
+                        document.querySelector('input[name="technologies"]').value = project.technologies ? project.technologies.join(', ') : '';
+                        document.querySelector('input[name="featured"]').checked = project.featured;
+                        
+                        // Handle main image
+                        if (project.image_url) {
+                            document.getElementById('imageUrl').value = project.image_url;
+                            document.getElementById('previewImg').src = `/uploads/${project.image_url}`;
+                            document.getElementById('imagePreview').style.display = 'block';
+                        }
+                        
+                        // Handle gallery images
+                        if (project.gallery_images && project.gallery_images.length > 0) {
+                            document.getElementById('galleryImagesList').value = JSON.stringify(project.gallery_images);
+                            const container = document.getElementById('galleryImagesContainer');
+                            container.innerHTML = '';
+                            project.gallery_images.forEach(filename => {
+                                const col = document.createElement('div');
+                                col.className = 'col-md-3 mb-2';
+                                col.innerHTML = `
+                                    <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                                `;
+                                container.appendChild(col);
+                            });
+                            document.getElementById('galleryPreview').style.display = 'block';
+                        }
+                        
+                        // Show modal
+                        const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+                        modal.show();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading project:', error);
+                    alert('Error loading project details');
+                });
+        }
+        
         function saveProject() {
             const form = document.getElementById('projectForm');
             const formData = new FormData(form);
@@ -707,8 +771,13 @@
             // Convert featured checkbox to boolean
             data.featured = formData.has('featured');
             
-            fetch('/api/projects', {
-                method: 'POST',
+            // Determine if this is an update or create operation
+            const isUpdate = data.project_id && data.project_id !== '';
+            const url = isUpdate ? `/api/projects/${data.project_id}` : '/api/projects';
+            const method = isUpdate ? 'PUT' : 'POST';
+            
+            fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
