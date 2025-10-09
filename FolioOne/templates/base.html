@@ -27,6 +27,36 @@
   <!-- Main CSS File -->
   <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
 
+  <!-- Custom Styles for Portfolio Cards -->
+  <style>
+    .portfolio-tags .badge, .project-tags .badge {
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-radius: 20px;
+      margin-right: 8px;
+      margin-bottom: 4px;
+      display: inline-block;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .portfolio-tags .badge.bg-primary, .project-tags .badge.bg-primary {
+      background: linear-gradient(135deg, #007bff, #0056b3) !important;
+      border: none;
+    }
+    
+    .portfolio-tags .badge.bg-secondary, .project-tags .badge.bg-secondary {
+      background: linear-gradient(135deg, #6c757d, #495057) !important;
+      border: none;
+    }
+    
+    .portfolio-tags .badge:hover, .project-tags .badge:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s ease;
+    }
+  </style>
+
   {% block extra_css %}{% endblock %}
 </head>
 
