@@ -680,7 +680,7 @@
                         const col = document.createElement('div');
                         col.className = 'col-md-3 mb-2';
                         col.innerHTML = `
-                            <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                            <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover; display: block;">
                         `;
                         container.appendChild(col);
                     });
@@ -731,7 +731,7 @@
                                 const col = document.createElement('div');
                                 col.className = 'col-md-3 mb-2';
                                 col.innerHTML = `
-                                    <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                                    <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover; display: block;">
                                 `;
                                 container.appendChild(col);
                             });
