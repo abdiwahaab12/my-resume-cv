@@ -55,6 +55,228 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
       transition: all 0.2s ease;
     }
+    
+    /* Hero Slider Styles */
+    .hero-slider {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .hero-slider .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    
+    .hero-slider .swiper-pagination {
+      bottom: 20px;
+    }
+    
+    .hero-slider .swiper-pagination-bullet {
+      background: rgba(255,255,255,0.5);
+      opacity: 1;
+    }
+    
+    .hero-slider .swiper-pagination-bullet-active {
+      background: #007bff;
+    }
+    
+    .hero-slider .swiper-button-next,
+    .hero-slider .swiper-button-prev {
+      color: #007bff;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .hero-slider .swiper-button-next:after,
+    .hero-slider .swiper-button-prev:after {
+      font-size: 20px;
+    }
+    
+    /* Gallery Slider Styles */
+    .gallery-swiper {
+      padding: 20px 0;
+    }
+    
+    .gallery-item {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    
+    .gallery-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      color: white;
+      padding: 30px 20px 20px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+      transform: translateY(0);
+    }
+    
+    .gallery-overlay h4 {
+      margin: 0 0 5px 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .gallery-overlay p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .gallery-swiper .swiper-pagination {
+      bottom: -50px;
+    }
+    
+    .gallery-swiper .swiper-pagination-bullet {
+      background: #007bff;
+      opacity: 0.3;
+    }
+    
+    .gallery-swiper .swiper-pagination-bullet-active {
+      opacity: 1;
+    }
+    
+    .gallery-swiper .swiper-button-next,
+    .gallery-swiper .swiper-button-prev {
+      color: #007bff;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .gallery-swiper .swiper-button-next:after,
+    .gallery-swiper .swiper-button-prev:after {
+      font-size: 18px;
+    }
+    
+    /* Project Gallery Modal Styles */
+    .project-gallery-slider {
+      height: 500px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .project-gallery-slider .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .project-gallery-slider .swiper-pagination {
+      bottom: 20px;
+    }
+    
+    .project-gallery-slider .swiper-pagination-bullet {
+      background: rgba(255,255,255,0.5);
+      opacity: 1;
+    }
+    
+    .project-gallery-slider .swiper-pagination-bullet-active {
+      background: #007bff;
+    }
+    
+    .project-gallery-slider .swiper-button-next,
+    .project-gallery-slider .swiper-button-prev {
+      color: #007bff;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .project-gallery-slider .swiper-button-next:after,
+    .project-gallery-slider .swiper-button-prev:after {
+      font-size: 20px;
+    }
+    
+    .project-details {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      height: 500px;
+      overflow-y: auto;
+    }
+    
+    .project-details h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .project-details h6 {
+      color: #007bff;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .project-details p {
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .project-technologies .badge {
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    
+    .modal-xl {
+      max-width: 1200px;
+    }
+    
+    /* Portfolio Gallery Link Styles */
+    .portfolio-gallery-link, .project-gallery-link {
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+    }
+    
+    .portfolio-gallery-link:hover, .project-gallery-link:hover {
+      background: rgba(0, 123, 255, 1);
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .portfolio-img:hover, .project-img:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
   </style>
 
   {% block extra_css %}{% endblock %}
@@ -147,7 +369,249 @@
   <!-- Main JS File -->
   <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
+  <!-- Hero Slider Initialization -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Hero Slider
+      if (document.querySelector('.hero-slider')) {
+        const heroSlider = new Swiper('.hero-slider', {
+          loop: true,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      }
+      
+      // Initialize Gallery Slider
+      if (document.querySelector('.gallery-swiper')) {
+        const gallerySlider = new Swiper('.gallery-swiper', {
+          loop: true,
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+          },
+          slidesPerView: 1,
+          spaceBetween: 30,
+          breakpoints: {
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 30,
+            },
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      }
+    });
+    
+    // Function to open project gallery modal
+    function openProjectGallery(projectId) {
+      fetch('/api/projects')
+        .then(response => response.json())
+        .then(projects => {
+          const project = projects.find(p => p.id === projectId);
+          if (project) {
+            // Update modal title
+            document.getElementById('projectGalleryModalLabel').textContent = project.title;
+            
+            // Update project details
+            document.getElementById('galleryProjectTitle').textContent = project.title;
+            document.getElementById('galleryProjectCategory').textContent = project.category;
+            document.getElementById('galleryProjectDate').textContent = new Date(project.created_at).toLocaleDateString();
+            document.getElementById('galleryProjectDescription').textContent = project.long_description || project.description;
+            
+            // Update technologies
+            const techContainer = document.getElementById('galleryProjectTechnologies');
+            techContainer.innerHTML = '';
+            if (project.technologies && project.technologies.length > 0) {
+              project.technologies.forEach(tech => {
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-secondary me-1 mb-1';
+                badge.textContent = tech;
+                techContainer.appendChild(badge);
+              });
+            }
+            
+            // Update project links
+            const projectUrl = document.getElementById('galleryProjectUrl');
+            const githubUrl = document.getElementById('galleryGithubUrl');
+            
+            if (project.project_url) {
+              projectUrl.href = project.project_url;
+              projectUrl.style.display = 'block';
+            } else {
+              projectUrl.style.display = 'none';
+            }
+            
+            if (project.github_url) {
+              githubUrl.href = project.github_url;
+              githubUrl.style.display = 'block';
+            } else {
+              githubUrl.style.display = 'none';
+            }
+            
+            // Update gallery images
+            const sliderWrapper = document.getElementById('gallerySliderWrapper');
+            sliderWrapper.innerHTML = '';
+            
+            // Add main image if available
+            if (project.image_url) {
+              const slide = document.createElement('div');
+              slide.className = 'swiper-slide';
+              slide.innerHTML = `<img src="/uploads/${project.image_url}" alt="${project.title}">`;
+              sliderWrapper.appendChild(slide);
+            }
+            
+            // Add gallery images
+            if (project.gallery_images && project.gallery_images.length > 0) {
+              project.gallery_images.forEach(imageUrl => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.innerHTML = `<img src="/uploads/${imageUrl}" alt="${project.title}">`;
+                sliderWrapper.appendChild(slide);
+              });
+            }
+            
+            // If no images, show placeholder
+            if (!project.image_url && (!project.gallery_images || project.gallery_images.length === 0)) {
+              const slide = document.createElement('div');
+              slide.className = 'swiper-slide';
+              slide.innerHTML = `
+                <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                  <div class="text-center text-muted">
+                    <i class="bi bi-image fs-1"></i>
+                    <p class="mt-2">No images available</p>
+                  </div>
+                </div>
+              `;
+              sliderWrapper.appendChild(slide);
+            }
+            
+            // Initialize or update the gallery slider
+            if (window.gallerySlider) {
+              window.gallerySlider.destroy(true, true);
+            }
+            
+            window.gallerySlider = new Swiper('.project-gallery-slider', {
+              loop: true,
+              autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+              },
+              effect: 'slide',
+              pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+              },
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            });
+            
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('projectGalleryModal'));
+            modal.show();
+          }
+        })
+        .catch(error => {
+          console.error('Error loading project:', error);
+          alert('Error loading project details');
+        });
+    }
+  </script>
+
   {% block extra_js %}{% endblock %}
+
+  <!-- Project Gallery Modal -->
+  <div class="modal fade" id="projectGalleryModal" tabindex="-1" aria-labelledby="projectGalleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="projectGalleryModalLabel">Project Gallery</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <!-- Gallery Slider -->
+            <div class="col-lg-8">
+              <div class="project-gallery-slider swiper">
+                <div class="swiper-wrapper" id="gallerySliderWrapper">
+                  <!-- Gallery images will be loaded here -->
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+              </div>
+            </div>
+            
+            <!-- Project Details -->
+            <div class="col-lg-4">
+              <div class="project-details">
+                <h3 id="galleryProjectTitle">Project Title</h3>
+                <div class="project-meta mb-3">
+                  <span class="badge bg-primary" id="galleryProjectCategory">Category</span>
+                  <span class="text-muted ms-2" id="galleryProjectDate">Date</span>
+                </div>
+                
+                <div class="project-description mb-4">
+                  <h6>Description</h6>
+                  <p id="galleryProjectDescription">Project description will appear here...</p>
+                </div>
+                
+                <div class="project-technologies mb-4">
+                  <h6>Technologies Used</h6>
+                  <div id="galleryProjectTechnologies">
+                    <!-- Technologies will be loaded here -->
+                  </div>
+                </div>
+                
+                <div class="project-links">
+                  <h6>Project Links</h6>
+                  <div class="d-grid gap-2">
+                    <a href="#" id="galleryProjectUrl" class="btn btn-primary" target="_blank" style="display: none;">
+                      <i class="bi bi-eye me-2"></i>View Live Demo
+                    </a>
+                    <a href="#" id="galleryGithubUrl" class="btn btn-outline-secondary" target="_blank" style="display: none;">
+                      <i class="bi bi-github me-2"></i>View on GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>

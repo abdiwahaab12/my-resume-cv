@@ -365,14 +365,28 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Project Image</label>
+                            <label class="form-label">Main Project Image (Thumbnail)</label>
                             <input type="file" class="form-control" id="projectImage" accept="image/*" onchange="uploadImage()">
-                            <small class="form-text text-muted">Upload a project screenshot or image</small>
+                            <small class="form-text text-muted">Upload the main project image (will be used as thumbnail)</small>
                             <input type="hidden" name="image_url" id="imageUrl">
                             <div id="imagePreview" class="mt-2" style="display: none;">
                                 <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                                 <div class="mt-1">
                                     <small class="text-success" id="uploadStatus"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gallery Images (Multiple Screenshots)</label>
+                            <input type="file" class="form-control" id="galleryImages" accept="image/*" multiple onchange="uploadGalleryImages()">
+                            <small class="form-text text-muted">Upload multiple screenshots (up to 5 images)</small>
+                            <input type="hidden" name="gallery_images" id="galleryImagesList">
+                            <div id="galleryPreview" class="mt-2" style="display: none;">
+                                <div class="row" id="galleryImagesContainer">
+                                    <!-- Gallery images will be displayed here -->
+                                </div>
+                                <div class="mt-1">
+                                    <small class="text-success" id="galleryUploadStatus"></small>
                                 </div>
                             </div>
                         </div>
@@ -607,6 +621,70 @@
             }
         }
         
+        function uploadGalleryImages() {
+            const fileInput = document.getElementById('galleryImages');
+            const files = fileInput.files;
+            const preview = document.getElementById('galleryPreview');
+            const container = document.getElementById('galleryImagesContainer');
+            const status = document.getElementById('galleryUploadStatus');
+            const hiddenInput = document.getElementById('galleryImagesList');
+            
+            if (files.length > 0) {
+                if (files.length > 5) {
+                    status.textContent = '❌ Maximum 5 images allowed';
+                    status.className = 'text-danger';
+                    return;
+                }
+                
+                preview.style.display = 'block';
+                container.innerHTML = '';
+                status.textContent = 'Uploading...';
+                status.className = 'text-info';
+                
+                const uploadPromises = Array.from(files).map(file => {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    return fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.filename) {
+                            return result.filename;
+                        } else {
+                            throw new Error(result.error || 'Upload failed');
+                        }
+                    });
+                });
+                
+                Promise.all(uploadPromises)
+                .then(filenames => {
+                    hiddenInput.value = JSON.stringify(filenames);
+                    status.textContent = `✅ ${filenames.length} images uploaded successfully!`;
+                    status.className = 'text-success';
+                    
+                    // Display preview images
+                    filenames.forEach(filename => {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 mb-2';
+                        col.innerHTML = `
+                            <img src="/uploads/${filename}" alt="Gallery Preview" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                        `;
+                        container.appendChild(col);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    status.textContent = '❌ Error uploading images: ' + error.message;
+                    status.className = 'text-danger';
+                });
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
         function saveProject() {
             const form = document.getElementById('projectForm');
             const formData = new FormData(form);
@@ -615,6 +693,15 @@
             // Convert technologies string to array
             if (data.technologies) {
                 data.technologies = data.technologies.split(',').map(tech => tech.trim()).filter(tech => tech);
+            }
+            
+            // Convert gallery images string to array
+            if (data.gallery_images) {
+                try {
+                    data.gallery_images = JSON.parse(data.gallery_images);
+                } catch (e) {
+                    data.gallery_images = [];
+                }
             }
             
             // Convert featured checkbox to boolean

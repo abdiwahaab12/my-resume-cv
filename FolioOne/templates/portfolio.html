@@ -24,7 +24,7 @@
         {% for project in projects %}
         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ project.category.lower().replace(' ', '-') }}">
           <div class="portfolio-card">
-            <div class="portfolio-img">
+            <div class="portfolio-img" style="cursor: pointer;" data-project-id="{{ project.id }}" onclick="openProjectGallery(this.dataset.projectId)">
               {% if project.image_url %}
               <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
               {% else %}
@@ -36,10 +36,12 @@
               </div>
               {% endif %}
               <div class="portfolio-overlay">
-                {% if project.image_url %}
-                <a href="{{ url_for('uploaded_file', filename=project.image_url) }}" class="glightbox portfolio-lightbox"><i class="bi bi-plus"></i></a>
-                {% endif %}
-                <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="portfolio-details-link"><i class="bi bi-link"></i></a>
+                <a href="javascript:void(0)" data-project-id="{{ project.id }}" onclick="openProjectGallery(this.dataset.projectId)" class="portfolio-gallery-link" title="View Gallery">
+                  <i class="bi bi-images"></i>
+                </a>
+                <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="portfolio-details-link" title="View Details">
+                  <i class="bi bi-link"></i>
+                </a>
               </div>
             </div>
             <div class="portfolio-info">
@@ -74,6 +76,60 @@
 
     <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="400">
       <a href="{{ url_for('contact') }}" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Slider Section -->
+<section id="gallery-slider" class="gallery-slider section">
+  <div class="container" data-aos="fade-up">
+    <div class="section-title">
+      <h2>Project Gallery</h2>
+      <p>Showcasing my work through visual storytelling</p>
+    </div>
+    
+    <div class="gallery-swiper swiper" data-aos="fade-up" data-aos-delay="100">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-1.webp') }}" alt="Project 1" class="img-fluid">
+            <div class="gallery-overlay">
+              <h4>Web Development</h4>
+              <p>Modern responsive website</p>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-2.webp') }}" alt="Project 2" class="img-fluid">
+            <div class="gallery-overlay">
+              <h4>Mobile App</h4>
+              <p>Cross-platform application</p>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-3.webp') }}" alt="Project 3" class="img-fluid">
+            <div class="gallery-overlay">
+              <h4>UI/UX Design</h4>
+              <p>User interface design</p>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='assets/img/portfolio/portfolio-4.webp') }}" alt="Project 4" class="img-fluid">
+            <div class="gallery-overlay">
+              <h4>E-commerce</h4>
+              <p>Online shopping platform</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
     </div>
   </div>
 </section>

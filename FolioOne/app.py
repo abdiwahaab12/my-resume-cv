@@ -36,7 +36,8 @@ class Project(db.Model):
     description = db.Column(db.Text, nullable=False)
     long_description = db.Column(db.Text)
     category = db.Column(db.String(100), nullable=False)
-    image_url = db.Column(db.String(200))
+    image_url = db.Column(db.String(200))  # Main/thumbnail image
+    gallery_images = db.Column(db.Text)  # JSON array of gallery images
     project_url = db.Column(db.String(200))
     github_url = db.Column(db.String(200))
     _technologies = db.Column('technologies', db.Text)  # JSON string
@@ -61,6 +62,24 @@ class Project(db.Model):
             self._technologies = json.dumps(value)
         else:
             self._technologies = value
+    
+    @property
+    def gallery_images_list(self):
+        """Get gallery images as a list"""
+        if self.gallery_images:
+            try:
+                return json.loads(self.gallery_images)
+            except:
+                return []
+        return []
+    
+    @gallery_images_list.setter
+    def gallery_images_list(self, value):
+        """Set gallery images from a list"""
+        if isinstance(value, list):
+            self.gallery_images = json.dumps(value)
+        else:
+            self.gallery_images = value
 
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -226,8 +245,10 @@ def api_projects():
         'id': p.id,
         'title': p.title,
         'description': p.description,
+        'long_description': p.long_description,
         'category': p.category,
         'image_url': p.image_url,
+        'gallery_images': p.gallery_images_list,  # This will use the property
         'project_url': p.project_url,
         'github_url': p.github_url,
         'technologies': p.technologies,  # This will use the property

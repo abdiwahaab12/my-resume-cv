@@ -28,7 +28,24 @@
       <div class="col-lg-6 order-1 order-lg-2">
         <div class="hero-image" data-aos="zoom-in" data-aos-delay="300">
           <div class="image-wrapper">
-            <img src="{{ url_for('static', filename='assets/img/profile/profile-square-11.webp') }}" alt="Brandon Johnson" class="img-fluid">
+            <!-- Hero Image Slider -->
+            <div class="hero-slider swiper" data-aos="zoom-in" data-aos-delay="300">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="{{ url_for('static', filename='assets/img/profile/profile-square-11.webp') }}" alt="Abdiwahab Abdikadir Hassan" class="img-fluid">
+                </div>
+                <div class="swiper-slide">
+                  <img src="{{ url_for('static', filename='assets/img/profile/profile-square-11.webp') }}" alt="Professional Photo" class="img-fluid">
+                </div>
+                <div class="swiper-slide">
+                  <img src="{{ url_for('static', filename='assets/img/profile/profile-square-11.webp') }}" alt="Portfolio Image" class="img-fluid">
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+            
             <div class="floating-elements">
               <div class="floating-card design" data-aos="fade-left" data-aos-delay="700">
                 <i class="bi bi-palette"></i>
@@ -63,7 +80,7 @@
       {% for project in projects %}
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
         <div class="project-card">
-          <div class="project-img">
+          <div class="project-img" style="cursor: pointer;" data-project-id="{{ project.id }}" onclick="openProjectGallery(this.dataset.projectId)">
             {% if project.image_url %}
             <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
             {% else %}
@@ -75,7 +92,10 @@
             </div>
             {% endif %}
             <div class="project-overlay">
-              <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="project-details-link">
+              <a href="javascript:void(0)" data-project-id="{{ project.id }}" onclick="openProjectGallery(this.dataset.projectId)" class="project-gallery-link" title="View Gallery">
+                <i class="bi bi-images"></i>
+              </a>
+              <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="project-details-link" title="View Details">
                 <i class="bi bi-link"></i>
               </a>
             </div>
