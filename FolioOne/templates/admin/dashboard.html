@@ -209,6 +209,7 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
+                                                <th>Image</th>
                                                 <th>Title</th>
                                                 <th>Category</th>
                                                 <th>Featured</th>
@@ -368,6 +369,12 @@
                             <input type="file" class="form-control" id="projectImage" accept="image/*" onchange="uploadImage()">
                             <small class="form-text text-muted">Upload a project screenshot or image</small>
                             <input type="hidden" name="image_url" id="imageUrl">
+                            <div id="imagePreview" class="mt-2" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                <div class="mt-1">
+                                    <small class="text-success" id="uploadStatus"></small>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Technologies (comma-separated)</label>
@@ -501,6 +508,14 @@
             loadProjects();
         });
         
+        // Clear form when project modal is hidden
+        document.getElementById('projectModal').addEventListener('hidden.bs.modal', function() {
+            const form = document.getElementById('projectForm');
+            form.reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imageUrl').value = '';
+        });
+        
         // Load messages when contacts tab is clicked
         document.querySelector('a[href="#contacts"]').addEventListener('click', function() {
             loadMessages();
@@ -523,6 +538,12 @@
                     const tbody = document.getElementById('projectsTable');
                     tbody.innerHTML = projects.map(project => `
                         <tr>
+                            <td>
+                                ${project.image_url ? 
+                                    `<img src="/static/uploads/${project.image_url}" alt="${project.title}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">` : 
+                                    '<div class="bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;"><i class="bi bi-image text-muted"></i></div>'
+                                }
+                            </td>
                             <td>${project.title}</td>
                             <td><span class="badge bg-secondary">${project.category}</span></td>
                             <td>${project.featured ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-muted"></i>'}</td>
@@ -544,8 +565,20 @@
         function uploadImage() {
             const fileInput = document.getElementById('projectImage');
             const file = fileInput.files[0];
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const uploadStatus = document.getElementById('uploadStatus');
             
             if (file) {
+                // Show preview immediately
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                    uploadStatus.textContent = 'Uploading...';
+                };
+                reader.readAsDataURL(file);
+                
                 const formData = new FormData();
                 formData.append('file', file);
                 
@@ -557,15 +590,20 @@
                 .then(result => {
                     if (result.filename) {
                         document.getElementById('imageUrl').value = result.filename;
-                        alert('Image uploaded successfully!');
+                        uploadStatus.textContent = '✅ Image uploaded successfully!';
+                        uploadStatus.className = 'text-success';
                     } else {
-                        alert('Error uploading image: ' + (result.error || 'Unknown error'));
+                        uploadStatus.textContent = '❌ Error uploading image: ' + (result.error || 'Unknown error');
+                        uploadStatus.className = 'text-danger';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error uploading image');
+                    uploadStatus.textContent = '❌ Error uploading image';
+                    uploadStatus.className = 'text-danger';
                 });
+            } else {
+                preview.style.display = 'none';
             }
         }
         
