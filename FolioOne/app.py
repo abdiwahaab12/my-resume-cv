@@ -78,6 +78,7 @@ class Message(db.Model):
     email = db.Column(db.String(200), nullable=False)
     subject = db.Column(db.String(200))
     message = db.Column(db.Text, nullable=False)
+    read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 # Routes
@@ -385,6 +386,7 @@ def api_messages():
         'email': msg.email,
         'subject': msg.subject,
         'message': msg.message,
+        'read': msg.read,
         'created_at': msg.created_at.isoformat()
     } for msg in messages])
 
@@ -397,8 +399,20 @@ def api_get_message(message_id):
         'email': message.email,
         'subject': message.subject,
         'message': message.message,
+        'read': message.read,
         'created_at': message.created_at.isoformat()
     })
+
+@app.route('/api/messages/<int:message_id>', methods=['PUT'])
+def api_mark_message_read(message_id):
+    if 'admin_logged_in' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    message = Message.query.get_or_404(message_id)
+    message.read = True
+    db.session.commit()
+    
+    return jsonify({'message': 'Message marked as read successfully'})
 
 @app.route('/api/messages/<int:message_id>', methods=['DELETE'])
 def api_delete_message(message_id):
