@@ -84,7 +84,12 @@
             <h4>{{ project.title }}</h4>
             <p>{{ project.description[:100] }}{% if project.description|length > 100 %}...{% endif %}</p>
             <div class="project-tags">
-              <span>{{ project.category }}</span>
+              <span class="badge bg-primary">{{ project.category }}</span>
+              {% if project.technologies %}
+                {% for tech in project.technologies[:2] %}
+                <span class="badge bg-secondary">{{ tech }}</span>
+                {% endfor %}
+              {% endif %}
             </div>
             <div class="project-links mt-3">
               {% if project.github_url %}

@@ -39,10 +39,28 @@ class Project(db.Model):
     image_url = db.Column(db.String(200))
     project_url = db.Column(db.String(200))
     github_url = db.Column(db.String(200))
-    technologies = db.Column(db.Text)  # JSON string
+    _technologies = db.Column('technologies', db.Text)  # JSON string
     featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    @property
+    def technologies(self):
+        """Get technologies as a list"""
+        if self._technologies:
+            try:
+                return json.loads(self._technologies)
+            except:
+                return []
+        return []
+    
+    @technologies.setter
+    def technologies(self, value):
+        """Set technologies from a list"""
+        if isinstance(value, list):
+            self._technologies = json.dumps(value)
+        else:
+            self._technologies = value
 
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -212,7 +230,7 @@ def api_projects():
         'image_url': p.image_url,
         'project_url': p.project_url,
         'github_url': p.github_url,
-        'technologies': json.loads(p.technologies) if p.technologies else [],
+        'technologies': p.technologies,  # This will use the property
         'featured': p.featured,
         'created_at': p.created_at.isoformat()
     } for p in projects])
