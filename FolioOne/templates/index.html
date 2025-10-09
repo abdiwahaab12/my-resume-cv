@@ -65,7 +65,7 @@
         <div class="project-card">
           <div class="project-img">
             {% if project.image_url %}
-            <img src="{{ url_for('static', filename='uploads/' + project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
+            <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
             {% else %}
             <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
               <div class="text-center text-muted">
@@ -85,6 +85,18 @@
             <p>{{ project.description[:100] }}{% if project.description|length > 100 %}...{% endif %}</p>
             <div class="project-tags">
               <span>{{ project.category }}</span>
+            </div>
+            <div class="project-links mt-3">
+              {% if project.github_url %}
+              <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-secondary btn-sm me-2" title="View on GitHub">
+                <i class="bi bi-github"></i> GitHub
+              </a>
+              {% endif %}
+              {% if project.project_url %}
+              <a href="{{ project.project_url }}" target="_blank" class="btn btn-outline-primary btn-sm" title="View Live Demo">
+                <i class="bi bi-eye"></i> Demo Preview
+              </a>
+              {% endif %}
             </div>
           </div>
         </div>

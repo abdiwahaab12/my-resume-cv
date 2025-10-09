@@ -26,7 +26,7 @@
           <div class="portfolio-card">
             <div class="portfolio-img">
               {% if project.image_url %}
-              <img src="{{ url_for('static', filename='uploads/' + project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
+              <img src="{{ url_for('uploaded_file', filename=project.image_url) }}" alt="{{ project.title }}" class="img-fluid">
               {% else %}
               <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
                 <div class="text-center text-muted">
@@ -37,7 +37,7 @@
               {% endif %}
               <div class="portfolio-overlay">
                 {% if project.image_url %}
-                <a href="{{ url_for('static', filename='uploads/' + project.image_url) }}" class="glightbox portfolio-lightbox"><i class="bi bi-plus"></i></a>
+                <a href="{{ url_for('uploaded_file', filename=project.image_url) }}" class="glightbox portfolio-lightbox"><i class="bi bi-plus"></i></a>
                 {% endif %}
                 <a href="{{ url_for('portfolio_details', project_id=project.id) }}" class="portfolio-details-link"><i class="bi bi-link"></i></a>
               </div>
@@ -51,6 +51,18 @@
                   {% for tech in project.technologies[:2] %}
                   <span>{{ tech }}</span>
                   {% endfor %}
+                {% endif %}
+              </div>
+              <div class="portfolio-links mt-3">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" class="btn btn-outline-secondary btn-sm me-2" title="View on GitHub">
+                  <i class="bi bi-github"></i> GitHub
+                </a>
+                {% endif %}
+                {% if project.project_url %}
+                <a href="{{ project.project_url }}" target="_blank" class="btn btn-outline-primary btn-sm" title="View Live Demo">
+                  <i class="bi bi-eye"></i> Demo Preview
+                </a>
                 {% endif %}
               </div>
             </div>

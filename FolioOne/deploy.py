@@ -12,6 +12,11 @@ def main():
     if not os.environ.get('SECRET_KEY'):
         os.environ['SECRET_KEY'] = 'my-super-secret-key-12345-abdiwahab-resume-website-2025'
     
+    # Ensure upload directory exists
+    upload_dir = 'static/uploads'
+    os.makedirs(upload_dir, exist_ok=True)
+    print(f"📁 Upload directory ensured: {upload_dir}")
+    
     # Use persistent database path for production
     if not os.environ.get('DATABASE_URL'):
         # Use a persistent path for production deployments
