@@ -45,16 +45,25 @@ def migrate_database():
             
             if 'read' in columns:
                 print("✅ Column 'read' already exists in the message table")
-                conn.close()
-                return True
+            else:
+                print("🔧 Adding 'read' column to message table...")
+                # Add the read column with default value False
+                cursor.execute("ALTER TABLE message ADD COLUMN read BOOLEAN DEFAULT 0")
+                # Update existing messages to have read=False (they should already be False by default)
+                cursor.execute("UPDATE message SET read = 0 WHERE read IS NULL")
+                print("✅ Successfully added 'read' column to the message table")
             
-            print("🔧 Adding 'read' column to message table...")
+            # Check if the gallery_images column exists in project table
+            cursor.execute("PRAGMA table_info(project)")
+            project_columns = [column[1] for column in cursor.fetchall()]
             
-            # Add the read column with default value False
-            cursor.execute("ALTER TABLE message ADD COLUMN read BOOLEAN DEFAULT 0")
-            
-            # Update existing messages to have read=False (they should already be False by default)
-            cursor.execute("UPDATE message SET read = 0 WHERE read IS NULL")
+            if 'gallery_images' in project_columns:
+                print("✅ Column 'gallery_images' already exists in the project table")
+            else:
+                print("🔧 Adding 'gallery_images' column to project table...")
+                # Add the gallery_images column with default value NULL
+                cursor.execute("ALTER TABLE project ADD COLUMN gallery_images TEXT")
+                print("✅ Successfully added 'gallery_images' column to the project table")
             
             # Commit the changes
             conn.commit()
